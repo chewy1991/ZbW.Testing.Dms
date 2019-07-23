@@ -1,7 +1,6 @@
 ﻿namespace ZbW.Testing.Dms.Client.ViewModels
 {
     using System.Collections.Generic;
-
     using Prism.Commands;
     using Prism.Mvvm;
 

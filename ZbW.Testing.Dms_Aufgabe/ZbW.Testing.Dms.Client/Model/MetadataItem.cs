@@ -3,5 +3,6 @@
     internal class MetadataItem
     {
         // TODO: Write your Metadata properties here
+        public string _bezeichnung { get; set; }
     }
 }
