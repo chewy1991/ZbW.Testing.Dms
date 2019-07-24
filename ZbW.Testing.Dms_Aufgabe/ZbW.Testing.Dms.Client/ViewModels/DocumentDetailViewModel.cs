@@ -1,4 +1,11 @@
-﻿namespace ZbW.Testing.Dms.Client.ViewModels
+﻿using System.Configuration;
+using System.IO;
+using System.Windows;
+using System.Windows.Media;
+using ZbW.Testing.Dms.Client.Model;
+using ZbW.Testing.Dms.Client.Services;
+
+namespace ZbW.Testing.Dms.Client.ViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -151,6 +158,53 @@
             }
         }
 
+        private bool CheckRequiredFields()
+        {
+            if (Bezeichnung != null && ValutaDatum != null && TypItems != null)
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Es müssen alle Pflichtfelder ausgefüllt werden!");
+                return false;
+            }
+        }
+
+        private MetadataItem createMetadataItem()
+        {
+            var mdi = new MetadataItem();
+            mdi._benutzer = Benutzer;
+            mdi._bezeichnung = Bezeichnung;
+            mdi._stichwoerter = Stichwoerter;
+            mdi._erfassungsdatum = Erfassungsdatum;
+            mdi._filePath = _filePath;
+            mdi._isRemoveFileEnabled = IsRemoveFileEnabled;
+            mdi._selectedTypItem = SelectedTypItem;
+            mdi._valutaDatum = ValutaDatum;
+            mdi._guid = Guid.NewGuid();
+            mdi.SavePath = CreateSavePath();
+            mdi.XMLFileName = CreateFileName(mdi._guid);
+
+            return mdi;
+        }
+
+        private string CreateSavePath()
+        {
+            var repoDir = ConfigurationManager.AppSettings.Get("RepositoryDir").ToString();
+            repoDir+= @"\";
+            repoDir += Erfassungsdatum.Year;
+            
+            return repoDir;
+        }
+
+        private string CreateFileName(Guid g)
+        {
+            var filename = g.ToString() + "_Metadata.xml";
+            return filename;
+        }
+
+        
         private void OnCmdDurchsuchen()
         {
             var openFileDialog = new OpenFileDialog();
@@ -164,7 +218,15 @@
 
         private void OnCmdSpeichern()
         {
+            MetadataItem mdi = createMetadataItem();
             // TODO: Add your Code here
+            CheckRequiredFields();
+            MessageBox.Show(mdi.SavePath);
+            
+
+            XMLSerialization serialization = new XMLSerialization();
+            serialization.SerializeObject(createMetadataItem());
+
 
             _navigateBack();
         }
