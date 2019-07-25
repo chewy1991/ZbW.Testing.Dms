@@ -28,6 +28,8 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         private DateTime _erfassungsdatum;
 
         private string _filePath;
+        private Guid _Guid;
+        private string guid;
 
         private bool _isRemoveFileEnabled;
 
@@ -36,6 +38,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         private string _stichwoerter;
 
         private List<string> _typItems;
+        private FileInfo _extension;
 
         private DateTime? _valutaDatum;
 
@@ -173,6 +176,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private MetadataItem createMetadataItem()
         {
+            
             var mdi = new MetadataItem();
             mdi._benutzer = Benutzer;
             mdi._bezeichnung = Bezeichnung;
@@ -182,34 +186,33 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             mdi._isRemoveFileEnabled = IsRemoveFileEnabled;
             mdi._selectedTypItem = SelectedTypItem;
             mdi._valutaDatum = ValutaDatum;
-            mdi._guid = Guid.NewGuid();
+            mdi._guid = _Guid;
             mdi.SavePath = CreateSavePath();
-            mdi.XMLFileName = CreateFileName(mdi._guid);
+            mdi.XMLFileName = $"{guid}_Metadata.xml" ;
+            _extension = new FileInfo(_filePath);
+            mdi._Extension = _extension.Extension;
+            mdi.FileName = $"{guid}_Content{mdi._Extension}";
+            
 
             return mdi;
         }
 
         private string CreateSavePath()
         {
+            
             var repoDir = ConfigurationManager.AppSettings.Get("RepositoryDir").ToString();
             repoDir+= @"\";
-            repoDir += Erfassungsdatum.Year;
-            
+            repoDir += _valutaDatum.Value.Year; 
             return repoDir;
         }
 
-        private string CreateFileName(Guid g)
-        {
-            var filename = g.ToString() + "_Metadata.xml";
-            return filename;
-        }
+        
 
         
         private void OnCmdDurchsuchen()
         {
             var openFileDialog = new OpenFileDialog();
             var result = openFileDialog.ShowDialog();
-
             if (result.GetValueOrDefault())
             {
                 _filePath = openFileDialog.FileName;
@@ -218,6 +221,9 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private void OnCmdSpeichern()
         {
+            _Guid = Guid.NewGuid();
+            guid = _Guid.ToString();
+
             MetadataItem mdi = createMetadataItem();
             // TODO: Add your Code here
             CheckRequiredFields();
@@ -226,6 +232,8 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
             XMLSerialization serialization = new XMLSerialization();
             serialization.SerializeObject(createMetadataItem());
+            FileMove filemove = new FileMove();
+            filemove.CopyFile(mdi);
 
 
             _navigateBack();

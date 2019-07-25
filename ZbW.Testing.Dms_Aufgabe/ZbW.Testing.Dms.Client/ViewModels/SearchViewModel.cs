@@ -1,4 +1,9 @@
-﻿namespace ZbW.Testing.Dms.Client.ViewModels
+﻿using System.Configuration;
+using System.IO;
+using System.Windows;
+using ZbW.Testing.Dms.Client.Services;
+
+namespace ZbW.Testing.Dms.Client.ViewModels
 {
     using System.Collections.Generic;
     using Prism.Commands;
@@ -19,6 +24,8 @@
 
         private List<string> _typItems;
 
+        private SearchingLibraries lib;
+
         public SearchViewModel()
         {
             TypItems = ComboBoxItems.Typ;
@@ -26,6 +33,8 @@
             CmdSuchen = new DelegateCommand(OnCmdSuchen);
             CmdReset = new DelegateCommand(OnCmdReset);
             CmdOeffnen = new DelegateCommand(OnCmdOeffnen, OnCanCmdOeffnen);
+
+            lib = new SearchingLibraries();
         }
 
         public DelegateCommand CmdOeffnen { get; }
@@ -115,6 +124,8 @@
         private void OnCmdSuchen()
         {
             // TODO: Add your Code here
+            FilteredMetadataItems= lib.FileSearch(_suchbegriff,SelectedTypItem);
+
         }
 
         private void OnCmdReset()

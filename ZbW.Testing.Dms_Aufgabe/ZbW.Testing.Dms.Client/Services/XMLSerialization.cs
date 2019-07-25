@@ -25,12 +25,21 @@ namespace ZbW.Testing.Dms.Client.Services
                 Directory.CreateDirectory(mdi.SavePath);
             }
 
-            string path = mdi.SavePath + @"\"+ mdi.XMLFileName;
+            string path = $@"{mdi.SavePath}\{mdi.XMLFileName}";
             stream = new FileStream(path, FileMode.Create);
             serializer = new XmlSerializer(typeof(MetadataItem));
             serializer.Serialize(stream, mdi);
             stream.Close();
 
+        }
+
+        public MetadataItem DeserializeObject(string XMLFilename)
+        {
+            serializer = new XmlSerializer(typeof(MetadataItem));
+            //string path = $@"{folder} / {XMLFilename}";
+            //MessageBox.Show(path);
+            stream = new FileStream(XMLFilename,FileMode.Open);
+            return (MetadataItem) serializer.Deserialize(stream);
         }
 
     }

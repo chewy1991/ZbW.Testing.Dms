@@ -33,7 +33,7 @@
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Typ"/>
             <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding TypItems}" SelectedItem="{Binding SelectedTypItem}"/>
 
-            <Button Grid.Row="0" Grid.Column="5" Content="Suchen"/>
+            <Button Grid.Row="0" Grid.Column="5" Content="Suchen" Command="{Binding CmdSuchen}"/>
             <Button Grid.Row="1" Grid.Column="5" Content="Reset"/>
         </Grid>
         <DataGrid Grid.Row="1"
@@ -41,10 +41,10 @@
                   SelectedItem="{Binding SelectedMetadataItem}"
                   AutoGenerateColumns="True">
             <!--TODO: Remove AutoGenerateColumns="True" and specify your own columns -->
-            <!--<DataGrid.Columns>
+            <DataGrid.Columns>
                 <DataGridTextColumn Header="Typ" Binding="{Binding Typ}"/>
                 <DataGridTextColumn Header="Bezeichnung" Binding="{Binding Bezeichnung}"/>
-            </DataGrid.Columns>-->
+            </DataGrid.Columns>
         </DataGrid>
 
         <Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Öffnen" Width="100"/>

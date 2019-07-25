@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 
 namespace ZbW.Testing.Dms.Client.Model
 {
@@ -14,12 +15,16 @@ namespace ZbW.Testing.Dms.Client.Model
         public bool _isRemoveFileEnabled { get; set; }
         public string _selectedTypItem { get; set; }
         public DateTime? _valutaDatum { get; set; }
-        public Guid _guid { get; set; }
-        public string XMLFileName { get; set; }
-        public string SavePath { get; set; }
 
+        public Guid _guid { get; set; }
+
+        public string XMLFileName { get; set; }
+        public string FileName { get; set; }
+        public string SavePath { get; set; }
+        public string _Extension { get; set; }
         public MetadataItem() {}
 
+        
 
 
         
