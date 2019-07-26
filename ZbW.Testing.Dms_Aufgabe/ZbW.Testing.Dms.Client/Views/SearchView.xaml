@@ -34,19 +34,26 @@
             <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding TypItems}" SelectedItem="{Binding SelectedTypItem}"/>
 
             <Button Grid.Row="0" Grid.Column="5" Content="Suchen" Command="{Binding CmdSuchen}"/>
-            <Button Grid.Row="1" Grid.Column="5" Content="Reset"/>
+            <Button Grid.Row="1" Grid.Column="5" Content="Reset" Command="{Binding CmdReset}"/>
         </Grid>
         <DataGrid Grid.Row="1"
                   ItemsSource="{Binding FilteredMetadataItems}"
                   SelectedItem="{Binding SelectedMetadataItem}"
-                  AutoGenerateColumns="True">
+                  AutoGenerateColumns="False">
             <!--TODO: Remove AutoGenerateColumns="True" and specify your own columns -->
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Typ" Binding="{Binding Typ}"/>
-                <DataGridTextColumn Header="Bezeichnung" Binding="{Binding Bezeichnung}"/>
+                <DataGridTextColumn Header="Typ" Binding="{Binding _selectedTypItem}"/>
+                <DataGridTextColumn Header="Bezeichnung" Binding="{Binding _bezeichnung}"/>
+                <DataGridTextColumn Header="Erstellt von" Binding="{Binding _benutzer}"/>
+                <DataGridTextColumn Header="Erstellt am" Binding="{Binding _valutaDatum}"/>
+                <DataGridTextColumn Header="Stichwörter" Binding="{Binding _stichwoerter}"/>
+                <DataGridTextColumn Header="Dateiname" Binding="{Binding FileName}"/>
+
+
+
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Öffnen" Width="100"/>
+        <Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Öffnen" Command="{Binding CmdOeffnen}" Width="100"/>
     </Grid>
 </UserControl>

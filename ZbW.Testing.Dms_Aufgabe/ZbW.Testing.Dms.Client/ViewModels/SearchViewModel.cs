@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Windows;
 using ZbW.Testing.Dms.Client.Services;
@@ -25,6 +26,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         private List<string> _typItems;
 
         private SearchingLibraries lib;
+        private FileMove file;
 
         public SearchViewModel()
         {
@@ -35,6 +37,9 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             CmdOeffnen = new DelegateCommand(OnCmdOeffnen, OnCanCmdOeffnen);
 
             lib = new SearchingLibraries();
+            lib.GetAllFiles();
+            FilteredMetadataItems = lib.metadataItemsList;
+            file = new FileMove();
         }
 
         public DelegateCommand CmdOeffnen { get; }
@@ -119,18 +124,23 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         private void OnCmdOeffnen()
         {
             // TODO: Add your Code here
+            if(SelectedMetadataItem != null)
+                file.OpenFile($@"{SelectedMetadataItem.SavePath}\{SelectedMetadataItem.FileName}");
+                
         }
 
         private void OnCmdSuchen()
         {
             // TODO: Add your Code here
-            FilteredMetadataItems= lib.FileSearch(_suchbegriff,SelectedTypItem);
+            FilteredMetadataItems= lib.FileSearch(Suchbegriff,SelectedTypItem);
 
         }
 
         private void OnCmdReset()
         {
-            // TODO: Add your Code here
+            FilteredMetadataItems = lib.metadataItemsList;
+            Suchbegriff = String.Empty;
+            SelectedTypItem = null;
         }
     }
 }

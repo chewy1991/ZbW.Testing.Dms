@@ -35,11 +35,15 @@ namespace ZbW.Testing.Dms.Client.Services
 
         public MetadataItem DeserializeObject(string XMLFilename)
         {
+            MetadataItem mdi;
             serializer = new XmlSerializer(typeof(MetadataItem));
             //string path = $@"{folder} / {XMLFilename}";
             //MessageBox.Show(path);
+
             stream = new FileStream(XMLFilename,FileMode.Open);
-            return (MetadataItem) serializer.Deserialize(stream);
+            mdi = (MetadataItem)serializer.Deserialize(stream);
+            stream.Close();
+            return mdi;
         }
 
     }

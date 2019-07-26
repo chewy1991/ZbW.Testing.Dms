@@ -179,13 +179,23 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             
             var mdi = new MetadataItem();
             mdi._benutzer = Benutzer;
-            mdi._bezeichnung = Bezeichnung;
-            mdi._stichwoerter = Stichwoerter;
+            
+                mdi._bezeichnung = Bezeichnung;
+            
+            if (Stichwoerter == null)
+            {
+                mdi._stichwoerter = "";
+            }
+            else
+            {
+                mdi._stichwoerter = Stichwoerter;
+            }
+            
             mdi._erfassungsdatum = Erfassungsdatum;
             mdi._filePath = _filePath;
             mdi._isRemoveFileEnabled = IsRemoveFileEnabled;
             mdi._selectedTypItem = SelectedTypItem;
-            mdi._valutaDatum = ValutaDatum;
+            mdi._valutaDatum = ValutaDatum.Value;
             mdi._guid = _Guid;
             mdi.SavePath = CreateSavePath();
             mdi.XMLFileName = $"{guid}_Metadata.xml" ;

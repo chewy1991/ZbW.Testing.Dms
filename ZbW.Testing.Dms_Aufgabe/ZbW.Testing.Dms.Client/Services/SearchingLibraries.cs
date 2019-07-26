@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -17,19 +18,16 @@ namespace ZbW.Testing.Dms.Client.Services
         public string[] directories =
             Directory.GetDirectories(ConfigurationManager.AppSettings.Get("RepositoryDir").ToString());
 
-        
-
-        public List<MetadataItem>  FileSearch(string Suchbegriff, string DokuTyp)
+        private List<MetadataItem> _mdis;
+        public List<MetadataItem> metadataItemsList
         {
-            if (Suchbegriff == null)
-            {
-                Suchbegriff = "";
-            }
+            get { return _mdis; }
+            set { _mdis = value; }
+        }
 
-            if (DokuTyp == null)
-            {
-                DokuTyp = "";
-            }
+        public List<MetadataItem>  GetAllFiles()
+        {
+            
             XMLSerialization serialization;
             serialization = new XMLSerialization();
             List<MetadataItem> results = new List<MetadataItem>();
@@ -38,18 +36,41 @@ namespace ZbW.Testing.Dms.Client.Services
             {
                 foreach (string d in Directory.GetFiles(e,"*.xml"))
                 {
-                    
-                    
-                    mdi = serialization.DeserializeObject(d);
-
-                    
-                        results.Add(mdi);
-                    
-
+                    mdi = serialization.DeserializeObject((String)d);
+                    results.Add(mdi);    
                 }
 
             }
-            return results;
+
+            this.metadataItemsList = results;
+            return this.metadataItemsList;
+        }
+        public List<MetadataItem> FileSearch(string Suchbegriff, string DokuTyp)
+        {
+            var filteredMdi = new List<MetadataItem>();
+            foreach (MetadataItem mdi in metadataItemsList)
+            {
+                if ((String.IsNullOrEmpty(Suchbegriff)) && !(String.IsNullOrEmpty(DokuTyp)))
+                {
+                    if (mdi._selectedTypItem.Equals(DokuTyp))
+                        filteredMdi.Add(mdi);
+                }
+                if (!(String.IsNullOrEmpty(Suchbegriff)) && !(String.IsNullOrEmpty(DokuTyp)))
+                {
+                    if ((mdi._stichwoerter.Contains(Suchbegriff) || mdi._bezeichnung.Contains(Suchbegriff)) &&
+                        mdi._selectedTypItem.Equals(DokuTyp))
+                        filteredMdi.Add(mdi);
+                }
+                else if ((String.IsNullOrEmpty(Suchbegriff) && String.IsNullOrEmpty(DokuTyp)) || String.IsNullOrEmpty(DokuTyp))
+                {
+                    MessageBox.Show("Geben Sie einen Suchbegriff und / oder Dokumententyp an!");
+                    return null;
+                }
+
+            }
+
+            return filteredMdi;
+
         }
     }
 }
