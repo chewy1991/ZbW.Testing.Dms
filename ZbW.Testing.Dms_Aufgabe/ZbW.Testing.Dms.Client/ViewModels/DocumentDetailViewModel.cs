@@ -38,7 +38,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         private string _stichwoerter;
 
         private List<string> _typItems;
-        private FileInfo _extension;
+        
 
         private DateTime? _valutaDatum;
 
@@ -161,63 +161,6 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             }
         }
 
-        private bool CheckRequiredFields()
-        {
-            if (Bezeichnung != null && ValutaDatum != null && TypItems != null)
-            {
-                return true;
-            }
-            else
-            {
-                MessageBox.Show("Es müssen alle Pflichtfelder ausgefüllt werden!");
-                return false;
-            }
-        }
-
-        private MetadataItem createMetadataItem()
-        {
-            
-            var mdi = new MetadataItem();
-            mdi._benutzer = Benutzer;
-            
-                mdi._bezeichnung = Bezeichnung;
-            
-            if (Stichwoerter == null)
-            {
-                mdi._stichwoerter = "";
-            }
-            else
-            {
-                mdi._stichwoerter = Stichwoerter;
-            }
-            
-            mdi._erfassungsdatum = Erfassungsdatum;
-            mdi._filePath = _filePath;
-            mdi._isRemoveFileEnabled = IsRemoveFileEnabled;
-            mdi._selectedTypItem = SelectedTypItem;
-            mdi._valutaDatum = ValutaDatum.Value;
-            mdi._guid = _Guid;
-            mdi.SavePath = CreateSavePath();
-            mdi.XMLFileName = $"{guid}_Metadata.xml" ;
-            _extension = new FileInfo(_filePath);
-            mdi._Extension = _extension.Extension;
-            mdi.FileName = $"{guid}_Content{mdi._Extension}";
-            
-
-            return mdi;
-        }
-
-        private string CreateSavePath()
-        {
-            
-            var repoDir = ConfigurationManager.AppSettings.Get("RepositoryDir").ToString();
-            repoDir+= @"\";
-            repoDir += _valutaDatum.Value.Year; 
-            return repoDir;
-        }
-
-        
-
         
         private void OnCmdDurchsuchen()
         {
@@ -231,19 +174,22 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private void OnCmdSpeichern()
         {
+            AddingClass adden = new AddingClass();
             _Guid = Guid.NewGuid();
             guid = _Guid.ToString();
 
-            MetadataItem mdi = createMetadataItem();
+            MetadataItem mdi = adden.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter,Erfassungsdatum,_filePath, IsRemoveFileEnabled,SelectedTypItem, ValutaDatum, _Guid);
             // TODO: Add your Code here
-            CheckRequiredFields();
-            MessageBox.Show(mdi.SavePath);
-            
+            if(adden.CheckRequiredFields(Bezeichnung, TypItems, ValutaDatum))
+            {
+                XMLSerialization serialization = new XMLSerialization();
+                serialization.SerializeObject(mdi);
+                FileMove filemove = new FileMove();
+                filemove.CopyFile(mdi);
 
-            XMLSerialization serialization = new XMLSerialization();
-            serialization.SerializeObject(createMetadataItem());
-            FileMove filemove = new FileMove();
-            filemove.CopyFile(mdi);
+            }
+            
+            
 
 
             _navigateBack();

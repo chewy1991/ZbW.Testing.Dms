@@ -72,6 +72,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\MetadataItem.cs" />
     <Compile Include="Repositories\ComboBoxItems.cs" />
+    <Compile Include="Services\AddingClass.cs" />
     <Compile Include="Services\FileMove.cs" />
     <Compile Include="Services\SearchingLibraries.cs" />
     <Compile Include="Services\XMLSerialization.cs" />
