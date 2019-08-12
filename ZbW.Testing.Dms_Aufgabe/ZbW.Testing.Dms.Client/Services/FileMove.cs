@@ -10,10 +10,12 @@ using ZbW.Testing.Dms.Client.Model;
 
 namespace ZbW.Testing.Dms.Client.Services
 {
-    class FileMove
+    public class FileMove
     {
+        public bool OperationHasHappend { get; set; }
         public void CopyFile(MetadataItem mdi)
         {
+            OperationHasHappend = false;
             string copyPath = $@"{mdi.SavePath}\{mdi.FileName}";
             File.Copy(mdi._filePath,copyPath);
 
@@ -21,6 +23,8 @@ namespace ZbW.Testing.Dms.Client.Services
             {
                 File.Delete(mdi._filePath);
             }
+
+            OperationHasHappend = true;
         }
 
         public void OpenFile(string path)
