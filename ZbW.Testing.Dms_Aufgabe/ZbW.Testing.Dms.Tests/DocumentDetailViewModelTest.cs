@@ -10,12 +10,14 @@ using ZbW.Testing.Dms.Client.Model;
 using ZbW.Testing.Dms.Client.Services;
 using ZbW.Testing.Dms.Client.Views;
 using ZbW.Testing.Dms.Client.ViewModels;
+using FakeItEasy;
 
 namespace ZbW.Testing.Dms.Tests
 {
     [TestFixture]
     public class DocumentDetailViewModelTest
     {
+        const string path = @"C:\Users\addik\Desktop\test\";
         [SetUp]
         public void SetUp()
         {
@@ -187,32 +189,148 @@ namespace ZbW.Testing.Dms.Tests
             Assert.IsFalse(check);
         }
 
-        //[Test]
-        //public void AddinClass_CreateMetaData_IsTrue()
-        //{
-        //    //arrange
-        //    var adding = new AddingClass();
-        //    var Benutzer = "Adrian";
-        //    var Bezeichnung = "Test";
-        //    var Stichwoerter = "Test2";
-        //    DateTime Erfassungsdatum = DateTime.Now;
-        //    var filepath = @"C:\Users\addik\Desktop\test1\";
-        //    var IsRemoveEnabled = false;
-        //    var SelectedTypItem = "Verträge";
-        //    DateTime? Valutadata = DateTime.Now;
-        //    Guid guid = Guid.NewGuid();
-        //    var mdi = new MetadataItem();
 
-        //    //act
+        [Test]
+        public void XMLSerialization_Deserialize_IsTrue()
+        {
+            //arrange
+            var XML = new XMLSerialization();
+            var mdi = new MetadataItem();
 
-        //    mdi = adding.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter, Erfassungsdatum, filepath,
-        //        IsRemoveEnabled, SelectedTypItem,Valutadata, guid);
+            //act
+            mdi = XML.DeserializeObject(path + @"2019\5e60a267-f59d-49a1-a735-b53180caca1a_Metadata.xml");
+            //Assert
+            Assert.IsTrue(mdi.XMLFileName.Equals("5e60a267-f59d-49a1-a735-b53180caca1a_Metadata.xml"));
+        }
 
-        //    //Assert
+        [Test]
+        public void AddinClass_CreateMetaData_IsTrue()
+        {
+            //arrange
 
-        //    Assert.IsTrue((Benutzer == mdi._benutzer && Bezeichnung == mdi._bezeichnung && Stichwoerter == mdi._stichwoerter && Erfassungsdatum == mdi._erfassungsdatum && filepath == mdi._filePath && IsRemoveEnabled == mdi._isRemoveFileEnabled && SelectedTypItem == mdi._selectedTypItem && Valutadata == mdi._valutaDatum && guid == mdi._guid));
+            var adding = new AddingClass();
+            var Benutzer = "Adrian";
+            var Bezeichnung = "Test";
+            var Stichwoerter = "Test2";
+            DateTime Erfassungsdatum = DateTime.Now;
+            var filepath = @"C:\Users\addik\Desktop\test1";
+            var IsRemoveEnabled = false;
+            var SelectedTypItem = "Verträge";
+            DateTime? Valutadata = DateTime.Now;
+            Guid guid = Guid.NewGuid();
+            var mdi = new MetadataItem();
+
+            //act
+
+            mdi = adding.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter, Erfassungsdatum, filepath,
+                IsRemoveEnabled, SelectedTypItem, Valutadata, guid);
+
+            //Assert
+
+            Assert.IsTrue((Benutzer == mdi._benutzer && Bezeichnung == mdi._bezeichnung && Stichwoerter == mdi._stichwoerter && Erfassungsdatum == mdi._erfassungsdatum && filepath == mdi._filePath && IsRemoveEnabled == mdi._isRemoveFileEnabled && SelectedTypItem == mdi._selectedTypItem && Valutadata.Value == mdi._valutaDatum && guid == mdi._guid));
 
 
-        //}
+        }
+
+        [Test]
+        public void AddinClass_CreateSafePath_IsTrue()
+        {
+            //arrange
+            var Addingclass = new AddingClass();
+            DateTime? Valutadat = DateTime.Now;
+
+            //act
+            var result = Addingclass.CreateSavePath(Valutadat);
+
+            //assert
+            Assert.IsTrue(result.Equals($@"{path}2019"));
+        }
+
+        [Test]
+        public void AddinClass_CreateMetaDataItemCheckSafepath_IsTrue()
+        {
+            //arrange
+
+            var adding = new AddingClass();
+            var Benutzer = "Adrian";
+            var Bezeichnung = "Test";
+            var Stichwoerter = "Test2";
+            DateTime Erfassungsdatum = DateTime.Now;
+            var filepath = @"C:\Users\addik\Desktop\test1";
+            var IsRemoveEnabled = false;
+            var SelectedTypItem = "Verträge";
+            DateTime? Valutadata = new DateTime(2019,11,11,0,0,0);
+            Guid guid = Guid.NewGuid();
+            var mdi = new MetadataItem();
+
+            //act
+
+            mdi = adding.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter, Erfassungsdatum, filepath,
+                IsRemoveEnabled, SelectedTypItem, Valutadata, guid);
+
+            var result = mdi.SavePath;
+
+            //Assert
+
+            Assert.IsTrue(result == $"{path}{Valutadata.Value.Year}");
+
+        }
+
+        [Test]
+        public void SearchingLibraries_GetAllFiles_IsTrue()
+        {
+            //arrange
+            var SearchingLibraries = new SearchingLibraries();
+            string[] dir = Directory.GetDirectories(path);
+            var anz = 0;
+            List<MetadataItem> metalist = new List<MetadataItem>();
+            //act
+            foreach (string d in dir)
+            {
+                foreach (var e in Directory.GetFiles(d,"*.xml"))
+                {
+                    anz++;
+                }
+            }
+            metalist = SearchingLibraries.GetAllFiles();
+            var result = metalist.Count;
+            //assert
+            Assert.That(result == anz);
+        }
+
+        [Test]
+
+        public void XMLSearialization_SerializeObject_IsTrue()
+        {
+            //arrange
+            var XML = new XMLSerialization();
+            var mdi = new MetadataItem();
+            var adding = new AddingClass();
+            var Benutzer = "Adrian";
+            var Bezeichnung = "Test";
+            var Stichwoerter = "Test2";
+            DateTime Erfassungsdatum = DateTime.Now;
+            var filepath = @"C:\Users\addik\Desktop\test1";
+            var IsRemoveEnabled = false;
+            var SelectedTypItem = "Verträge";
+            DateTime? Valutadata = DateTime.Now;
+            Guid guid = Guid.NewGuid();
+
+            //act
+            mdi = adding.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter, Erfassungsdatum, filepath,
+                IsRemoveEnabled, SelectedTypItem, Valutadata, guid);
+            XML.SerializeObject(mdi);
+
+            var result = File.Exists($@"{mdi.SavePath}\{mdi.XMLFileName}");
+            //Assert
+            Assert.IsTrue(result);
+
+
+        }
+
+
+
+
+
     }
 }

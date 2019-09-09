@@ -57,12 +57,14 @@ namespace ZbW.Testing.Dms.Client.Services
 
             return mdi;
         }
-        public string CreateSavePath(DateTime? _valutaDatum)
+        public string CreateSavePath(DateTime? valutaDatum)
         {
-
-            var repoDir = ConfigurationManager.AppSettings.Get("RepositoryDir").ToString();
-            repoDir += @"\";
-            repoDir += _valutaDatum.Value.Year;
+            
+                var repoDir = ConfigurationManager.AppSettings.Get("RepositoryDir").ToString();
+                repoDir += @"\";
+                repoDir += valutaDatum.Value.Year;
+            
+            
             return repoDir;
         }
 

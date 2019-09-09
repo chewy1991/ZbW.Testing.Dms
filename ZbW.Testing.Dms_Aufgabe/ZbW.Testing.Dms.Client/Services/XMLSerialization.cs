@@ -16,10 +16,12 @@ namespace ZbW.Testing.Dms.Client.Services
     {
         private static XmlSerializer serializer;
         private static FileStream stream;
+        public bool OperationHappened;
         
 
         public void SerializeObject(MetadataItem mdi)
         {
+            OperationHappened = false;
             if (!Directory.Exists(mdi.SavePath))
             {
                 Directory.CreateDirectory(mdi.SavePath);
@@ -30,6 +32,7 @@ namespace ZbW.Testing.Dms.Client.Services
             serializer = new XmlSerializer(typeof(MetadataItem));
             serializer.Serialize(stream, mdi);
             stream.Close();
+            OperationHappened = true;
 
         }
 
