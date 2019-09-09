@@ -17,14 +17,18 @@ namespace ZbW.Testing.Dms.Client.Services
         {
             OperationHasHappend = false;
             string copyPath = $@"{mdi.SavePath}\{mdi.FileName}";
-            File.Copy(mdi._filePath,copyPath);
-
-            if (mdi._isRemoveFileEnabled == true)
+            if (File.Exists(mdi._filePath))
             {
-                File.Delete(mdi._filePath);
-            }
+                File.Copy(mdi._filePath, copyPath);
 
-            OperationHasHappend = true;
+                if (mdi._isRemoveFileEnabled == true)
+                {
+                    File.Delete(mdi._filePath);
+                }
+
+                OperationHasHappend = true;
+            }
+            
         }
 
         public void OpenFile(string path)

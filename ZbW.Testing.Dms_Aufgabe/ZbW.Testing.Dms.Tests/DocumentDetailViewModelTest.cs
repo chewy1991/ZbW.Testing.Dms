@@ -324,9 +324,38 @@ namespace ZbW.Testing.Dms.Tests
             var result = File.Exists($@"{mdi.SavePath}\{mdi.XMLFileName}");
             //Assert
             Assert.IsTrue(result);
+        }
 
+        [Test]
+        public void SafingService_SafeFile_IsTrue()
+        {
+            //arrange
+            var XML = new XMLSerialization();
+            var safe = new SafingService();
+            var mdi = new MetadataItem();
+            var adding = new AddingClass();
+            var Benutzer = "Adrian";
+            var Bezeichnung = "Test";
+            var Stichwoerter = "Test2";
+            DateTime Erfassungsdatum = DateTime.Now;
+            var filepath = @"C:\Users\addik\Desktop\test1\testen.docx";
+            var IsRemoveEnabled = false;
+            var SelectedTypItem = "Verträge";
+            DateTime? Valutadata = DateTime.Now;
+            Guid guid = Guid.NewGuid();
+
+            //act
+            mdi = adding.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter, Erfassungsdatum, filepath,
+                IsRemoveEnabled, SelectedTypItem, Valutadata, guid);
+            safe.SafeFile(mdi);
+            var result = File.Exists($@"{mdi.SavePath}\{mdi.XMLFileName}");
+
+            //Assert
+            Assert.IsTrue(result);
 
         }
+
+        
 
 
 

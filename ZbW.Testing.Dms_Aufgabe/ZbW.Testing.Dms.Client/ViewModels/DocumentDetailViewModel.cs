@@ -178,14 +178,14 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             _Guid = Guid.NewGuid();
             guid = _Guid.ToString();
 
-            MetadataItem mdi = adden.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter,Erfassungsdatum,_filePath, IsRemoveFileEnabled,SelectedTypItem, ValutaDatum, _Guid);
+            
             // TODO: Add your Code here
             if(adden.CheckRequiredFields(Bezeichnung, TypItems, ValutaDatum))
             {
-                XMLSerialization serialization = new XMLSerialization();
-                serialization.SerializeObject(mdi);
-                FileMove filemove = new FileMove();
-                filemove.CopyFile(mdi);
+                MetadataItem mdi = adden.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter, Erfassungsdatum, _filePath, IsRemoveFileEnabled, SelectedTypItem, ValutaDatum, _Guid);
+
+                SafingService safe = new SafingService();
+                safe.SafeFile(mdi);
 
             }
             
