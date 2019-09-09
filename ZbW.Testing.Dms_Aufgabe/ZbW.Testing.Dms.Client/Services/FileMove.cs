@@ -29,9 +29,21 @@ namespace ZbW.Testing.Dms.Client.Services
 
         public void OpenFile(string path)
         {
+            
+            OperationHasHappend = false;
             System.Diagnostics.Process process = new System.Diagnostics.Process();
-            process.StartInfo.FileName = path;
-            process.Start();
+            if (File.Exists(path))
+            {
+                process.StartInfo.FileName = path;
+                process.Start();
+                OperationHasHappend = true;
+            }
+            //else
+            //{
+            //    throw new FileNotFoundException();
+            //}
+            
+            
         }
     }
 }

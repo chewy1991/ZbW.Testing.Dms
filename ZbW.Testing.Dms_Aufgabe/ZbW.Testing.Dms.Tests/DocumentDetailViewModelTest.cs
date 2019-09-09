@@ -156,5 +156,63 @@ namespace ZbW.Testing.Dms.Tests
             Assert.True(happend && deleted);
 
         }
+
+        [Test]
+        public void FileMove_OpenFile_IsTrue()
+        {
+            //arrange
+            FileMove file = new FileMove();
+            var path = $@"C:\Users\addik\Desktop\test1\testen.docx";
+            var check = false;
+            //act
+            file.OpenFile(path);
+            check = file.OperationHasHappend;
+
+            //Assert
+            Assert.IsTrue(check);
+        }
+
+        [Test]
+        public void FileMove_OpenFileWrongPath_IsFalse()
+        {
+            //arrange
+            FileMove file = new FileMove();
+            var path = $@"C:\Users\addik\Desktop\test1\testen2.docx";
+            var check = false;
+            //act
+            file.OpenFile(path);
+            check = file.OperationHasHappend;
+
+            //Assert
+            Assert.IsFalse(check);
+        }
+
+        //[Test]
+        //public void AddinClass_CreateMetaData_IsTrue()
+        //{
+        //    //arrange
+        //    var adding = new AddingClass();
+        //    var Benutzer = "Adrian";
+        //    var Bezeichnung = "Test";
+        //    var Stichwoerter = "Test2";
+        //    DateTime Erfassungsdatum = DateTime.Now;
+        //    var filepath = @"C:\Users\addik\Desktop\test1\";
+        //    var IsRemoveEnabled = false;
+        //    var SelectedTypItem = "Verträge";
+        //    DateTime? Valutadata = DateTime.Now;
+        //    Guid guid = Guid.NewGuid();
+        //    var mdi = new MetadataItem();
+
+        //    //act
+
+        //    mdi = adding.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter, Erfassungsdatum, filepath,
+        //        IsRemoveEnabled, SelectedTypItem,Valutadata, guid);
+
+        //    //Assert
+
+        //    Assert.IsTrue((Benutzer == mdi._benutzer && Bezeichnung == mdi._bezeichnung && Stichwoerter == mdi._stichwoerter && Erfassungsdatum == mdi._erfassungsdatum && filepath == mdi._filePath && IsRemoveEnabled == mdi._isRemoveFileEnabled && SelectedTypItem == mdi._selectedTypItem && Valutadata == mdi._valutaDatum && guid == mdi._guid));
+
+
+        //}
     }
 }
