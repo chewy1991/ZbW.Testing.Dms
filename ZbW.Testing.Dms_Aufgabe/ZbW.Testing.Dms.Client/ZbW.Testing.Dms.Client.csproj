@@ -73,9 +73,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Interfaces\IFilemove.cs" />
     <Compile Include="Model\MetadataItem.cs" />
     <Compile Include="Repositories\ComboBoxItems.cs" />
     <Compile Include="Services\AddingClass.cs" />
+    <Compile Include="Services\ButtonAction.cs" />
     <Compile Include="Services\FileMove.cs" />
     <Compile Include="Services\SafingService.cs" />
     <Compile Include="Services\SearchingLibraries.cs" />

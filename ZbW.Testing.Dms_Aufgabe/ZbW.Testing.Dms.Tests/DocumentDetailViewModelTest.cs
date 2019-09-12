@@ -11,6 +11,7 @@ using ZbW.Testing.Dms.Client.Services;
 using ZbW.Testing.Dms.Client.Views;
 using ZbW.Testing.Dms.Client.ViewModels;
 using FakeItEasy;
+using ZbW.Testing.Dms.Client.Interfaces;
 
 namespace ZbW.Testing.Dms.Tests
 {
@@ -18,6 +19,7 @@ namespace ZbW.Testing.Dms.Tests
     public class DocumentDetailViewModelTest
     {
         const string path = @"C:\Users\addik\Desktop\test\";
+        private const string testfile = "5e60a267-f59d-49a1-a735-b53180caca1a_Content.pdf";
         [SetUp]
         public void SetUp()
         {
@@ -355,7 +357,18 @@ namespace ZbW.Testing.Dms.Tests
 
         }
 
-        
+        [Test]
+        public void SearchViewModel_OpenFile_IsTrue()
+        {
+            //arrange
+            var button = new ButtonAction();
+            var foo = A.Fake<IFilemove>();
+            var testpath = path + @"2019\"+ testfile;
+            //act
+            button.OpenFile(foo,testpath);
+            //assert
+            A.CallTo(() => foo.OpenFile(testpath)).MustHaveHappenedOnceExactly();
+        }
 
 
 

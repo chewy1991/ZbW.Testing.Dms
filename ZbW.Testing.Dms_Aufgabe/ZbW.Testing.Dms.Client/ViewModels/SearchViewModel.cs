@@ -124,14 +124,24 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         private void OnCmdOeffnen()
         {
             // TODO: Add your Code here
-            if(SelectedMetadataItem != null)
-                file.OpenFile($@"{SelectedMetadataItem.SavePath}\{SelectedMetadataItem.FileName}");
+            ButtonAction act = new ButtonAction();
+            var file = new FileMove();
+
+            if (SelectedMetadataItem != null)
+            {
+                string path = $@"{SelectedMetadataItem.SavePath}\{SelectedMetadataItem.FileName}";
+                act.OpenFile(file, path);
+            }
+                
+                //file.OpenFile($@"{SelectedMetadataItem.SavePath}\{SelectedMetadataItem.FileName}");
                 
         }
 
         private void OnCmdSuchen()
         {
             // TODO: Add your Code here
+
+
             FilteredMetadataItems= lib.FileSearch(Suchbegriff,SelectedTypItem);
 
         }

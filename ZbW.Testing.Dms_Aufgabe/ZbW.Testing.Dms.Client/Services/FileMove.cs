@@ -6,11 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using ZbW.Testing.Dms.Client.Interfaces;
 using ZbW.Testing.Dms.Client.Model;
 
 namespace ZbW.Testing.Dms.Client.Services
 {
-    public class FileMove
+    public class FileMove:IFilemove
     {
         public bool OperationHasHappend { get; set; }
         public void CopyFile(MetadataItem mdi)
