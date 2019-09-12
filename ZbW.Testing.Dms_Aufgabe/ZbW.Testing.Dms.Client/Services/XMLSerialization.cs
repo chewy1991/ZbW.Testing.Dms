@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Windows;
 using System.Xml.Serialization;
 using ZbW.Testing.Dms.Client.Model;
 using System.Xml;
+using ZbW.Testing.Dms.Client.Interfaces;
 
 
 namespace ZbW.Testing.Dms.Client.Services
@@ -35,14 +37,12 @@ namespace ZbW.Testing.Dms.Client.Services
             OperationHappened = true;
 
         }
-
+        
         public MetadataItem DeserializeObject(string XMLFilename)
         {
             MetadataItem mdi;
             serializer = new XmlSerializer(typeof(MetadataItem));
-            //string path = $@"{folder} / {XMLFilename}";
-            //MessageBox.Show(path);
-
+            
             stream = new FileStream(XMLFilename,FileMode.Open);
             mdi = (MetadataItem)serializer.Deserialize(stream);
             stream.Close();

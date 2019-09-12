@@ -29,17 +29,7 @@ namespace ZbW.Testing.Dms.Tests
             }
         }
 
-       /* [TearDown]
-        public void Teardown()
-        {
-            if (!(File.Exists(@"C:\Users\addik\Desktop\test1\testenmitdel.docx")))
-            {
-                File.Create(@"C:\Users\addik\Desktop\test1\testenmitdel.docx");
-            }
-
-        }*/
-        
-        
+       
         [Test]
         public void CheckRequiredFields_AllFieldsNull_True()
         {
@@ -336,6 +326,7 @@ namespace ZbW.Testing.Dms.Tests
             var safe = new SafingService();
             var mdi = new MetadataItem();
             var adding = new AddingClass();
+            var file = new FileMove();
             var Benutzer = "Adrian";
             var Bezeichnung = "Test";
             var Stichwoerter = "Test2";
@@ -349,7 +340,7 @@ namespace ZbW.Testing.Dms.Tests
             //act
             mdi = adding.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter, Erfassungsdatum, filepath,
                 IsRemoveEnabled, SelectedTypItem, Valutadata, guid);
-            safe.SafeFile(mdi);
+            safe.SafeFile(file,mdi);
             var result = File.Exists($@"{mdi.SavePath}\{mdi.XMLFileName}");
 
             //Assert
@@ -370,6 +361,72 @@ namespace ZbW.Testing.Dms.Tests
             A.CallTo(() => foo.OpenFile(testpath)).MustHaveHappenedOnceExactly();
         }
 
+        [Test]
+        public void SearViewModel_OpenFileWrongPath_IsTrue()
+        {
+            //arrange
+            var button = new ButtonAction();
+            var foo = A.Fake<IFilemove>();
+            var testpath = path + @"2019\" + "wrongpath";
+            //act
+            button.OpenFile(foo, testpath);
+            //assert
+            A.CallTo(() => foo.OpenFile(testpath)).MustNotHaveHappened();
+        }
+
+        [Test]
+        public void SafingService_SafeFileFilemoveMustHappened_IsTrue()
+        {
+            //arrange
+            var safeService = new SafingService();
+            var foo = A.Fake<IFilemove>();
+            var mdi = new MetadataItem();
+            var adding = new AddingClass();
+            var Benutzer = "Adrian";
+            var Bezeichnung = "Test";
+            var Stichwoerter = "Test2";
+            DateTime Erfassungsdatum = DateTime.Now;
+            var filepath = @"C:\Users\addik\Desktop\test1\testen.docx";
+            var IsRemoveEnabled = false;
+            var SelectedTypItem = "Verträge";
+            DateTime? Valutadata = DateTime.Now;
+            Guid guid = Guid.NewGuid();
+
+            //act
+            mdi = adding.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter, Erfassungsdatum, filepath,
+                IsRemoveEnabled, SelectedTypItem, Valutadata, guid);
+            safeService.SafeFile(foo,mdi);
+            //Assert
+            A.CallTo(()=>foo.CopyFile(mdi)).MustHaveHappenedOnceExactly();
+        }
+
+        [Test]
+        public void SafingService_SafeFileFilemoveMustNotHappenedWrongFilePath_IsTrue()
+        {
+            
+                //arrange
+                var safeService = new SafingService();
+                var foo = A.Fake<IFilemove>();
+                var mdi = new MetadataItem();
+                var adding = new AddingClass();
+                var Benutzer = "Adrian";
+                var Bezeichnung = "Test";
+                var Stichwoerter = "Test2";
+                DateTime Erfassungsdatum = DateTime.Now;
+                var filepath = @"C:\Users\addik\Desktop\test1\testenwrong.docx";
+                var IsRemoveEnabled = false;
+                var SelectedTypItem = "Verträge";
+                DateTime? Valutadata = DateTime.Now;
+                Guid guid = Guid.NewGuid();
+
+                //act
+                mdi = adding.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter, Erfassungsdatum, filepath,
+                    IsRemoveEnabled, SelectedTypItem, Valutadata, guid);
+                safeService.SafeFile(foo, mdi);
+                //Assert
+                A.CallTo(() => foo.CopyFile(mdi)).MustNotHaveHappened();
+            
+        }
 
 
 

@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
@@ -16,7 +17,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
     using Prism.Mvvm;
 
     using ZbW.Testing.Dms.Client.Repositories;
-
+    [ExcludeFromCodeCoverage]
     internal class DocumentDetailViewModel : BindableBase
     {
         private readonly Action _navigateBack;
@@ -41,7 +42,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         
 
         private DateTime? _valutaDatum;
-
+        
         public DocumentDetailViewModel(string benutzer, Action navigateBack)
         {
             _navigateBack = navigateBack;
@@ -183,9 +184,9 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             if(adden.CheckRequiredFields(Bezeichnung, TypItems, ValutaDatum))
             {
                 MetadataItem mdi = adden.createMetadataItem(Benutzer, Bezeichnung, Stichwoerter, Erfassungsdatum, _filePath, IsRemoveFileEnabled, SelectedTypItem, ValutaDatum, _Guid);
-
+                FileMove filemove = new FileMove();
                 SafingService safe = new SafingService();
-                safe.SafeFile(mdi);
+                safe.SafeFile(filemove,mdi);
 
             }
             

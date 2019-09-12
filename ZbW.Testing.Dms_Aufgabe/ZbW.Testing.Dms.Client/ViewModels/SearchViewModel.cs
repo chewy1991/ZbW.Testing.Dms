@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 using ZbW.Testing.Dms.Client.Services;
@@ -12,7 +13,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
     using ZbW.Testing.Dms.Client.Model;
     using ZbW.Testing.Dms.Client.Repositories;
-
+    [ExcludeFromCodeCoverage]
     internal class SearchViewModel : BindableBase
     {
         private List<MetadataItem> _filteredMetadataItems;
@@ -133,7 +134,6 @@ namespace ZbW.Testing.Dms.Client.ViewModels
                 act.OpenFile(file, path);
             }
                 
-                //file.OpenFile($@"{SelectedMetadataItem.SavePath}\{SelectedMetadataItem.FileName}");
                 
         }
 

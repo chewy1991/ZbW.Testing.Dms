@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,7 @@ using ZbW.Testing.Dms.Client.Model;
 
 namespace ZbW.Testing.Dms.Client.Services
 {
+    
     public class SearchingLibraries
     {
         public string[] directories =
@@ -45,6 +47,7 @@ namespace ZbW.Testing.Dms.Client.Services
             this.metadataItemsList = results;
             return this.metadataItemsList;
         }
+        
         public List<MetadataItem> FileSearch(string Suchbegriff, string DokuTyp)
         {
             var filteredMdi = new List<MetadataItem>();

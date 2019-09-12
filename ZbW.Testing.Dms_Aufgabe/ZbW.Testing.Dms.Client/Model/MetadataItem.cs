@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace ZbW.Testing.Dms.Client.Model
 {
+    [ExcludeFromCodeCoverage]
     public class MetadataItem
     {
         // TODO: Write your Metadata properties here
